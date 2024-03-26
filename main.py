@@ -94,27 +94,26 @@ def run(offload: Optional[str] = None) -> float:
         #   ChatGPT is also good at explaining the difference between parallel and concurrent execution!
         #   Make sure to cite any sources you use to answer this question.
     elif offload == 'process2':
-    data2 = None
-    def offload_process2(data):
-        nonlocal data2
-        response = requests.post(f"{offload_url}/process2", json=data)
-        data2 = response.json()
-    thread = threading.Thread(target=offload_process2, args=(data,))
-    thread.start()
-    data1 = process1(data)
-    thread.join()
+        data2 = None
+        def offload_process2(data):
+            nonlocal data2
+            response = requests.post(f"{offload_url}/process2", json=data)
+            data2 = response.json()
+        thread = threading.Thread(target=offload_process2, args=(data,))
+        thread.start()
+        data1 = process1(data)
+        thread.join()
     elif offload == 'both':
-    def offload_process(data, process_name):
-        response = requests.post(f"{offload_url}/{process_name}", json=data)
-        return response.json()
-
-    thread1 = threading.Thread(target=lambda: offload_process(data, "process1"))
-    thread2 = threading.Thread(target=lambda: offload_process(data, "process2"))
-    thread1.start()
-    thread2.start()
-    thread1.join()
-    thread2.join()
-    data1, data2 = thread1.result, thread2.result
+        def offload_process(data, process_name):
+            response = requests.post(f"{offload_url}/{process_name}", json=data)
+            return response.json()
+        thread1 = threading.Thread(target=lambda: offload_process(data, "process1"))
+        thread2 = threading.Thread(target=lambda: offload_process(data, "process2"))
+        thread1.start()
+        thread2.start()
+        thread1.join()
+        thread2.join()
+        data1, data2 = thread1.result, thread2.result
 
 
     ans = final_process(data1, data2)
