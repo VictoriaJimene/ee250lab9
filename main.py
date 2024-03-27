@@ -106,14 +106,13 @@ def run(offload: Optional[str] = None) -> float:
     elif offload == 'both':
         def offload_process(data, process_name):
             response = requests.post(f"{offload_url}/{process_name}", json=data)
-            return response.json()
+            data = response.json()
         thread1 = threading.Thread(target=lambda: offload_process(data, "process1"))
         thread2 = threading.Thread(target=lambda: offload_process(data, "process2"))
         thread1.start()
         thread2.start()
         thread1.join()
         thread2.join()
-        data1, data2 = thread1.result, thread2.result
 
 
     ans = final_process(data1, data2)
