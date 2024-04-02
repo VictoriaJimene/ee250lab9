@@ -4,7 +4,7 @@ from main import process1, process2  # Assuming process2 exists and is to be imp
 app = Flask(__name__)
 
 @app.route('/')
-def index():
+def index(): 
     return jsonify({'message': 'Welcome'})
 
 @app.route('/process1', methods=['POST'])
