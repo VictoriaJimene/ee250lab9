@@ -74,6 +74,8 @@ def run(offload: Optional[str] = None) -> float:
         float: the final result of the program.
     """
     data = generate_data()
+    data1 = []
+    data2 = []
     if offload is None: # in this case, we run the program locally
         data1 = process1(data)
         data2 = process2(data)
