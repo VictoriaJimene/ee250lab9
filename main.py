@@ -59,6 +59,8 @@ def final_process(data1: List[int], data2: List[int]) -> float:
 
 #Question 1: Under what circumstances do you think it will be worthwhile to offload one or both of 
 #the processing tasks to your PC? And conversely, under what circumstances will it not be worthwhile?
+#When the processing tasks are computentially intensive which means they would require a larger amount of memeory. If dealing with simple tasks
+#it would not make sense to offload and have more overhead. 
 
 #offload_url = 'http://192.168.242.1:5001'
 offload_url = 'http://localhost:5001'
@@ -91,10 +93,13 @@ def run(offload: Optional[str] = None) -> float:
         data2 = process2(data)
         thread.join()
         # Question 2: Why do we need to join the thread here?
+        #To make sure the main program is waiting for the offloaded task to finish before it continues (because this could lead to errors if not)
         # Question 3: Are the processing functions executing in parallel or just concurrently? What is the difference?
         #   See this article: https://oxylabs.io/blog/concurrency-vs-parallelism
         #   ChatGPT is also good at explaining the difference between parallel and concurrent execution!
         #   Make sure to cite any sources you use to answer this question.
+        #They are processing concurrently because the tasks can start, run, and finish with overlapping time periods. Parallel would mean executing tasks simultaneously.
+        #They may not run simulatenously due to Python;s Global Interpreter Lock (Source: ChatGPT)
     elif offload == 'process2':
         data2 = None
         def offload_process2(data):
@@ -147,10 +152,14 @@ def main():
 
 
     # Question 4: What is the best offloading mode? Why do you think that is?
+    # In general it would be offloading both ptocessing tasks to reduce the amount of time needed to execute. 
     # Question 5: What is the worst offloading mode? Why do you think that is?
+    # Process1 or Process2 because they are complex and use requirements from both tasks. 
     # Question 6: The processing functions in the example aren't very likely to be used in a real-world application. 
     #   What kind of processing functions would be more likely to be used in a real-world application?
     #   When would you want to offload these functions to a server?
+    # An example would be machine learning model training or image processing because of how much resources and power are needed. 
+    # You would want to offload these to a server when dealing with large datasets. 
     
     
 if __name__ == '__main__':
